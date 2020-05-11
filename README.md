@@ -1,6 +1,8 @@
 # tally-light
 This is a piece of software that adds tally like-like functionality to your studio. It works by having a plugin in Open Broadcaster Software (OBS) send notifications to a web server about changes to the scenes and sources, and then have one or several web browers listen and react to those changes.
 
+Here is a short demonstration: https://youtu.be/68bge4QS_1Q
+
 ## Installation
 The installation consists of two parts.
 
