@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Tally light</title>
+		<script>
+			const connect = name => {
+				const ws = new WebSocket(location.origin.replace(/^http/, 'ws') + '/stream')
+
+				ws.onopen = () => {
+					ws.send(name)
+				} 
+
+				ws.onclose = () =>{
+					hide('enabled')
+					hide('disabled')
+					show('unknown')
+
+					document.title = 'Tally light'
+
+					setTimeout(() => {
+						connect(name)
+					}, 1000)
+				}
+
+				ws.onerror = () => {
+					console.log('error occurred, disconnecting')
+					ws.close()
+				}
+
+				ws.onmessage = event => {
+					const data = JSON.parse(event.data)
+					
+					if (data === null) {
+						document.title = '(?) ' + name
+					} else if (data.name === name) {
+						document.title = data.name
+
+						hide('unknown')
+						
+						if (data.enabled) {
+							show('enabled')
+							hide('disabled')
+						} else {
+							show('disabled')
+							hide('enabled')
+						}
+					}
+				}
+			}
+
+			const show = name => {
+				document.getElementById(name).style.display = 'block'
+			}
+
+			const hide = name => {
+				document.getElementById(name).style.display = 'none'
+			}
+			
+			const name = prompt('Source name?', window.sessionStorage.getItem('name') || '')
+			window.sessionStorage.setItem('name', name)
+			
+			connect(name)
+		</script>
+		<style type="text/css">
+			div {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				text-align: center;
+				line-height: 100vh;
+				font-size: 90vh;
+			}
+
+			#enabled, #disabled {
+				display: none;
+			}
+
+			#enabled {
+				background-color: red;
+			}
+
+			#disabled {
+				background-color: gray;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="unknown">?</div>
+		<div id="enabled"></div>
+		<div id="disabled"></div>
+	</body>
+</html>
