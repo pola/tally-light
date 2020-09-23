@@ -12,14 +12,15 @@ The web server resides in the `www-server` folder. To use it, you need Node and 
 * Copy `config.example.js` to `config.js` and edit the variables.
 * Run `node index.js` to run the actual server.
 
-### Plugin installation
-The OBS plugin resides in the `plugin` folder.
+## Plugin for OBS Studio
+### Installation
+The OBS plugin resides in the `obs-studio` folder.
 * Copy the file `config.example.py` to a new file `config.py` and edit the variables appropriately.
 * Install dependencies with `pip3 install -r requirements.txt`.
 * In OBS, select `Tools` and then `Scripts` in the menu. Add the plugin by navigating to `obs-tally-light.py`.
 * Make sure the script console doesn't give you any error message. If it complains about the module `requests` not being found, make sure that `config.py` points to the path where you that Python library is installed.
 
-## Running
+### Running
 In OBS, make sure you have at least one source.
 * Note down the name, e.g. `Window Capture 1`.
 * Open a web browser and navigate to the URL of your web server. The web browser will ask you for a _source name_, to which you reply with the name you have in OBS.
