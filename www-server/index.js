@@ -31,12 +31,21 @@ app.get('/', (req, res) => {
 
 app.post('/change', (req, res) => {
 	if (req.body.hasOwnProperty('name') && req.body.hasOwnProperty('enabled') && typeof req.body.name === 'string' && typeof req.body.enabled === 'boolean') {
-		states[req.body.name] = req.body.enabled
+		const reset = req.body.reset && typeof req.body.reset === 'boolean' && req.body.reset
 
+		if (reset) {
+			for (const key of Object.keys(states)) {
+				states[key] = false
+			}
+		}
+
+		states[req.body.name] = req.body.enabled
+		
 		wss.getWss().clients.forEach(c => {
 			c.send(JSON.stringify({
 				name: req.body.name,
-				enabled: req.body.enabled
+				enabled: req.body.enabled,
+				reset: reset,
 			}))
 		})
 	} else {
@@ -53,7 +62,8 @@ app.ws('/stream', function(ws, req) {
 		if (states.hasOwnProperty(msg)) {
 			response = {
 				name: msg,
-				enabled: states[msg]
+				enabled: states[msg],
+				reset: false,
 			}
 		} else {
 			response = null
