@@ -1,10 +1,10 @@
 # tally-light
-This is a piece of software that adds tally like-like functionality to your studio. It works by having a plugin in Open Broadcaster Software (OBS) send notifications to a web server about changes to the scenes and sources, and then have one or several web browers listen and react to those changes.
+This is a piece of software that adds tally like-like functionality to your studio. It works by having a plugin in Open Broadcaster Software (OBS) or Atem Mini send notifications to a web server about changes to the scenes and sources, and then have one or several web browers listen and react to those changes.
 
-Here is a short demonstration: https://youtu.be/68bge4QS_1Q
+Here is a short demonstration of how it works in OBS Studio: https://youtu.be/68bge4QS_1Q
 
 ## Installation
-The installation consists of two parts.
+The installation consists of two parts; the web server and a plugin of your choice.
 
 ### Web server installation
 The web server resides in the `www-server` folder. To use it, you need Node and NPM.
