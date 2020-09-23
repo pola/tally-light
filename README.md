@@ -36,9 +36,7 @@ The Atem Mini plugin resides in the `atem-mini` folder.
 
 ### Running
 Make sure that Atem Mini is running and that it is connected to the network. The IP address of Atem Mini can be configured using the software provided by Blackmagic.
-* Run the script by invoking
-```$ python3 atem-tally-light.py```
-inside the `atem-mini` folder.
+* Run `python3 atem-tally-light.py` inside the `atem-mini` folder and make sure it stays up, running.
 * Open a web browser and navigate to the URL of your web server. The web browser will ask you for a _source name_, to which you reply with the number that your camera has, e.g. 1, 2, 3 or 4.
 * Repeat the process in a new instance of the web browser (tab or window), with the number of another camera.
 * Switch outputs in Atem Mini. The switches should be reflected in the web browser instances.
