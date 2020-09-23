@@ -26,3 +26,19 @@ In OBS, make sure you have at least one source.
 * Open a web browser and navigate to the URL of your web server. The web browser will ask you for a _source name_, to which you reply with the name you have in OBS.
 * Add another source in OBS, with a different name, and repeat the process in the web browser in a new instance (tab or window), with the name of the new source.
 * Switch sources or scenes in OBS, and the switches should be reflected in the web browser instances.
+
+
+## Plugin for Atem Mini
+### Installation
+The Atem Mini plugin resides in the `atem-mini` folder.
+* Copy the file `config.example.py` to a new file `config.py` and edit the variables appropriately.
+* Install dependencies with `pip3 install -r requirements.txt`.
+
+### Running
+Make sure that Atem Mini is running and that it is connected to the network. The IP address of Atem Mini can be configured using the software provided by Blackmagic.
+* Run the script by invoking
+```$ python3 atem-tally-light.py```
+inside the `atem-mini` folder.
+* Open a web browser and navigate to the URL of your web server. The web browser will ask you for a _source name_, to which you reply with the number that your camera has, e.g. 1, 2, 3 or 4.
+* Repeat the process in a new instance of the web browser (tab or window), with the number of another camera.
+* Switch outputs in Atem Mini. The switches should be reflected in the web browser instances.
