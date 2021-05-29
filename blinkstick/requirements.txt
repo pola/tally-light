@@ -1,0 +1,2 @@
+BlinkStick==1.1.8
+websockets==8.1
