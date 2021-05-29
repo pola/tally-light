@@ -6,9 +6,8 @@ const config = require('./config')
 
 const app = express()
 
-const http_server = http.createServer(app)
-
-const wss = require('express-ws')(app, http_server)
+const httpServer = http.createServer(app)
+const websocketServer = require('express-ws')(app, httpServer)
 
 const states = {}
 
@@ -30,7 +29,7 @@ app.post('/change', (req, res) => {
 
 		states[req.body.name] = req.body.enabled
 		
-		wss.getWss().clients.forEach(c => {
+		websocketServer.getWss().clients.forEach(c => {
 			c.send(JSON.stringify({
 				name: req.body.name,
 				enabled: req.body.enabled,
@@ -62,7 +61,5 @@ app.ws('/stream', function(ws, req) {
 	})
 })
 
-http_server.listen(config.bind.port, config.bind.ip, () => {
-	console.log('server listening')
-})
+httpServer.listen(config.bind.port, config.bind.ip)
 
