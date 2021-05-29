@@ -33,23 +33,18 @@
 					
 					if (data === null) {
 						document.title = '(?) ' + name
-					} else if (data.name === name) {
-						document.title = data.name
+					} else {
+						document.title = name
 
 						hide('unknown')
 						
-						if (data.enabled) {
+						if (data.includes(name)) {
 							show('enabled')
 							hide('disabled')
 						} else {
 							show('disabled')
 							hide('enabled')
 						}
-					} else if (data.reset) {
-						hide('unknown')
-
-						show('disabled')
-						hide('enabled')
 					}
 				}
 			}

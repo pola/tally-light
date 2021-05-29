@@ -26,9 +26,8 @@ def change(s, enabled):
 
         if len(config.source_types) == 0 or source_type in config.source_types:
             print('informing')
-            requests.post(config.server + '/change', json={
-                'name': name,
-                'enabled': enabled
+            requests.put(config.server + '/change', json={
+                'enabled': [name],
             })
 
 

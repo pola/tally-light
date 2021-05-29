@@ -9,7 +9,7 @@ const app = express()
 const httpServer = http.createServer(app)
 const websocketServer = require('express-ws')(app, httpServer)
 
-const states = {}
+let enabled = []
 
 app.use(express.json())
 
@@ -17,47 +17,24 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/index.htm')
 })
 
-app.post('/change', (req, res) => {
-	if (req.body.hasOwnProperty('name') && req.body.hasOwnProperty('enabled') && typeof req.body.name === 'string' && typeof req.body.enabled === 'boolean') {
-		const reset = req.body.reset && typeof req.body.reset === 'boolean' && req.body.reset
-
-		if (reset) {
-			for (const key of Object.keys(states)) {
-				states[key] = false
-			}
-		}
-
-		states[req.body.name] = req.body.enabled
-		
-		websocketServer.getWss().clients.forEach(c => {
-			c.send(JSON.stringify({
-				name: req.body.name,
-				enabled: req.body.enabled,
-				reset: reset,
-			}))
-		})
-	} else {
-		res.status(400)
+app.put('/change', (req, res) => {
+	if (!Object.prototype.hasOwnProperty.call(req.body, 'enabled') || !Array.isArray(req.body.enabled) || req.body.enabled.map(x => typeof x).filter(x => x !== 'string').length > 0) {
+		res.status(400).end()
+		return
 	}
+
+	enabled = req.body.enabled.filter((v, i, a) => a.indexOf(v) === i)
+	
+	websocketServer.getWss().clients.forEach(c => {
+		c.send(JSON.stringify(enabled))
+	})
 	
 	res.end()
 })
 
 app.ws('/stream', function(ws, req) {
-	ws.on('message', msg => {
-		var response
-
-		if (states.hasOwnProperty(msg)) {
-			response = {
-				name: msg,
-				enabled: states[msg],
-				reset: false,
-			}
-		} else {
-			response = null
-		}
-
-		ws.send(JSON.stringify(response))
+	ws.on('message', () => {
+		ws.send(JSON.stringify(enabled))
 	})
 })
 

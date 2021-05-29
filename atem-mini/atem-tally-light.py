@@ -640,25 +640,23 @@ def init(a):
     while True:
         a.waitForPacket()
 
-lastSentActive = None
+previouslyEnabled = set()
 
 
 if __name__ == '__main__':
     a = Atem(config.address)
 
     def programInputWatch(atem):
-        global lastSentActive
-        currentlyActive = atem.state['program'][0]
+        global previouslyEnabled
+        currentlyEnabled = set([x for x in atem.state['tally_by_index'] if atem.state['tally_by_index'][x]['pgm']])
 
-        if currentlyActive == lastSentActive:
+        if previouslyEnabled == currentlyEnabled:
             return
-        
-        lastSentActive = currentlyActive
 
-        requests.post(config.server + '/change', json={
-            'name': str(currentlyActive),
-            'enabled': True,
-            'reset': True,
+        previouslyEnabled = currentlyEnabled
+
+        requests.put(config.server + '/change', json={
+            'enabled': list(currentlyEnabled),
         })
 
     a.pgmInputHandler = programInputWatch
@@ -667,4 +665,3 @@ if __name__ == '__main__':
 
     while True:
         a.waitForPacket()
-
