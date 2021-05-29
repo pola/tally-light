@@ -1,23 +1,12 @@
 'use strict'
 
-const fs = require('fs')
 const http = require('http')
-const https = require('https')
 const express = require('express')
 const config = require('./config')
 
 const app = express()
 
-var http_server
-
-if (config.ssl !== null) {
-        http_server = https.createServer({
-                key: fs.readFileSync(config.ssl.key),
-                cert: fs.readFileSync(config.ssl.cert)
-        }, app)
-} else {
-        http_server = http.createServer(app)
-}
+const http_server = http.createServer(app)
 
 const wss = require('express-ws')(app, http_server)
 
